@@ -12,13 +12,11 @@ public class UsuarioController {
 		
 	}
 	
-	//Método que alimenta o JTable
 	public ArrayList<Usuario> listarUsuarios() throws SQLException{
 		UsuarioDAO dao = new UsuarioDAO();
 		return dao.selecionarUsuarios();
 	}
 	
-	//Salvar no Banco
 	public void salvar(String nome, String fone, String login,
 			String senha, String perfil) throws SQLException {
 		Usuario usuario = new Usuario();

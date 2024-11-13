@@ -1,55 +1,87 @@
 package br.com.loja.assistec.controller;
 
-
-import br.com.loja.assistec.view.PrincipalView;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
+import br.com.loja.assistec.view.MensagemView;
+import br.com.loja.assistec.view.PrincipalView;
 
 public class PrincipalController {
+	private PrincipalView principalView;
+	protected String login;
+	protected String perfil;
 
-    private PrincipalView view;
-    private String usuario;
-    private String perfil;
+	public PrincipalController(String login, String perfil) {
+		this.login = login;
+		this.perfil = perfil;
+		this.principalView = new PrincipalView();
+		configurarJanela();
+		configurarListeners();
 
-    public PrincipalController(String usuario, String perfil) {
-        this.usuario = usuario;
-        this.perfil = perfil;
-        this.view = new PrincipalView(usuario, perfil);
-        configurarListeners();
-        this.view.setLocationRelativeTo(null);
-        this.view.setVisible(true);
-    }
-    
-    private class principalListener implements ActionListener {
+	}
+
+	private void configurarJanela() {
+		principalView.setLocationRelativeTo(null);
+		principalView.setVisible(true);
+	}
+
+	private class MenuActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if ("MenuSairAction".equals(e.getActionCommand())) {
-				sair();
-			}else if ("MenuSobreAction".equals(e.getActionCommand())) {
-				sobre();
+			String comando = e.getActionCommand();
+
+			switch (comando) {
+			case "MenuUsuariosAction":
+				abrirListagemUsuarios();
+				break;
+			case "MenuSairAction":
+				sairDoSistema();
+				break;
+			case "MenuSobreAction":
+				mostrarInformacoesSobre();
+				break;
+			default:
+				break;
 			}
 		}
 	}
 
-    private void configurarListeners() {
-		view.addPrincipalListener(new principalListener());
+	private void configurarListeners() {
+		principalView.addPrincipalViewListener(new MenuActionListener());
+		principalView.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				configurarPerfilUsuario();
+			}
+		});
+	}
 
+	private void abrirListagemUsuarios() {
+//		new ListarUsuarioController();
+	}
 
-    }
-    
+	private void sairDoSistema() {
+		MensagemView mv = new MensagemView("Tem certeza que deseja sair?");
+		int confirmacao = mv.getResposta();
+		if (confirmacao == 1) {
+			System.exit(0);
+		}
+	}
 
-    private void sair() {
-    	int Resposta = view.SairSistema() ;
-        if (Resposta == 0) {
-            System.exit(0);
-        }
-    }
+	private void mostrarInformacoesSobre() {
+		new MensagemView("Sistema Assistec IFSC", 10);
+	}
 
-    private void sobre() {
-        view.mostrarMensagem("O sistema loja bd é da aula de PDS 2024.2", "Informação");
-    }
-
+	private void configurarPerfilUsuario() {
+		ArrayList<String> listaPerfil = new ArrayList<>();
+		if ("Admin".equalsIgnoreCase(perfil)) {
+			listaPerfil.add("MenuRelatorio");
+			listaPerfil.add("MenuCadastro");
+		}
+		principalView.configurarPerfilUsuario(login, listaPerfil);
+	}
 
 }
