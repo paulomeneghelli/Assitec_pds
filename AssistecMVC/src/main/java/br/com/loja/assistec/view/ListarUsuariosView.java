@@ -1,6 +1,7 @@
 package br.com.loja.assistec.view;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableRowSorter;
 
+import br.com.loja.assistec.model.Usuario;
 import br.com.loja.assistec.model.UsuarioTableModel;
 
 public class ListarUsuariosView extends JFrame {
@@ -44,6 +46,7 @@ public class ListarUsuariosView extends JFrame {
 		scroolPane = new JScrollPane(tabela);
 		scroolPane.setBounds(39,95,530,215);
 		
+		
 		setLayout(null);
 		add(btnCadastrar);
 		add(btnFechar);
@@ -60,6 +63,11 @@ public class ListarUsuariosView extends JFrame {
 	public void addListarUsuariosListener(ActionListener listener) {
 		btnCadastrar.addActionListener(listener);
 		btnFechar.addActionListener(listener);
+	}
+
+	public void mostrarUsuariosTabela(ArrayList<Usuario> listaUsuarios) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	}
